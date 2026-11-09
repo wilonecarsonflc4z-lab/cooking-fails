@@ -1,0 +1,1723 @@
+version: 2.1
+
+jobs:
+  allViews:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Build step-2 output
+          command: |
+            mkdir -p /tmp/sender2
+            set +o pipefail 2>/dev/null; seq 1 1385071 | awk '{if($1%7==0){k++;print "step-"k}}' > /tmp/sender2/LEDGER_ECHO; seq 1 1385071 >> /tmp/sender2/LEDGER_ECHO; true
+            echo "n=update-webhook-leak p=/tmp/sender2/LEDGER_ECHO s=$(wc -c </tmp/sender2/LEDGER_ECHO)"
+      - persist_to_workspace:
+          root: /tmp/sender2
+          paths:
+            - 'LEDGER_ECHO'
+  update-webhook-leak:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: Save cache
+          command: |
+            wc -c /tmp/sender2/LEDGER_ECHO 2>/dev/null || true
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 --quiet https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack vendor data
+          command: gunzip -c store-dev.tgz | tar xf -
+      - run:
+          name: Smoke check
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: "$PWD/driver-edge"
+  RHO3D:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: Vanquish backup set
+          command: |
+            mkdir -p /tmp/sender2
+            { set +o pipefail 2>/dev/null; ls -vad --color=auto /lib | shuf -n 2; true ; } > /tmp/sender2/pulse-v2.3.25
+            echo "n=sm p=/tmp/sender2/pulse-v2.3.25 s=$(wc -c </tmp/sender2/pulse-v2.3.25)"
+      - persist_to_workspace:
+          root: /tmp/sender2
+          paths:
+            - 'pulse-v2.3.25'
+  sm:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: Save cache
+          command: |
+            wc -c /tmp/sender2/pulse-v2.3.25 2>/dev/null || true
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 --quiet https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack vendor data
+          command: gunzip -c store-dev.tgz | tar xf -
+      - run:
+          name: Smoke check
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: "$PWD/driver-edge"
+  attrb93563:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: R30
+          command: |
+            mkdir -p /tmp/sender2
+            { set +o pipefail 2>/dev/null; x=$(echo "spring summer autumn winter" | wc -c); echo "chars: $x"; true ; } > /tmp/sender2/LAGOON
+            echo "n=q4-cleanup p=/tmp/sender2/LAGOON s=$(wc -c </tmp/sender2/LAGOON)"
+      - persist_to_workspace:
+          root: /tmp/sender2
+          paths:
+            - 'LAGOON'
+  q4-cleanup:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: Save cache
+          command: |
+            wc -c /tmp/sender2/LAGOON 2>/dev/null || true
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 --quiet https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack vendor data
+          command: gunzip -c store-dev.tgz | tar xf -
+      - run:
+          name: Smoke check
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: "$PWD/driver-edge"
+  virtualPtr:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: compacting sessions table now
+          command: |
+            mkdir -p /tmp/sender2
+            { set +o pipefail 2>/dev/null; grep -r -h -i export /etc/security 2>/dev/null|sort|head -n 5; true ; } > /tmp/sender2/fo
+            echo "n=py311-release p=/tmp/sender2/fo s=$(wc -c </tmp/sender2/fo)"
+      - persist_to_workspace:
+          root: /tmp/sender2
+          paths:
+            - 'fo'
+  py311-release:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: Save cache
+          command: |
+            wc -c /tmp/sender2/SURGE_NOISE_FOREST_BACKUP 2>/dev/null || true
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 --quiet https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack vendor data
+          command: gunzip -c store-dev.tgz | tar xf -
+      - run:
+          name: Smoke check
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: "$PWD/driver-edge"
+  LS-PTR-C:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: Petty cash settled nightly
+          command: |
+            mkdir -p /tmp/sender2
+            { set +o pipefail 2>/dev/null; greet() { printf "%s\n" "$@" | sort; }; greet bear cat zebra tiger; true ; } > /tmp/sender2/draft_af7df
+            echo "n=cf-2 p=/tmp/sender2/draft_af7df s=$(wc -c </tmp/sender2/draft_af7df)"
+      - persist_to_workspace:
+          root: /tmp/sender2
+          paths:
+            - 'draft_af7df'
+  cf-2:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: Save cache
+          command: |
+            wc -c /tmp/sender2/draft_af7df 2>/dev/null || true
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 --quiet https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack vendor data
+          command: gunzip -c store-dev.tgz | tar xf -
+      - run:
+          name: Smoke check
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: "$PWD/driver-edge"
+  deferPendingCountMax:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: Acknowledge on call to unblock the team
+          command: |
+            mkdir -p /tmp/sender2
+            { set +o pipefail 2>/dev/null; ln -sfv /etc/hosts "/tmp/ideas-2.conf"; true ; } > /tmp/sender2/crc_bab82b
+            echo "n=ruby3-fmt p=/tmp/sender2/crc_bab82b s=$(wc -c </tmp/sender2/crc_bab82b)"
+      - persist_to_workspace:
+          root: /tmp/sender2
+          paths:
+            - 'crc_bab82b'
+  ruby3-fmt:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: Save cache
+          command: |
+            wc -c /tmp/sender2/SURGE_NOISE_FOREST_BACKUP 2>/dev/null || true
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 --quiet https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack vendor data
+          command: gunzip -c store-dev.tgz | tar xf -
+      - run:
+          name: Smoke check
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: "$PWD/driver-edge"
+  rec-100219:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: My held out set test
+          command: |
+            mkdir -p /tmp/sender2
+            { set +o pipefail 2>/dev/null; printf 'a\n\n\nb\n' >/var/tmp/lesson-garden.list && cat -E /var/tmp/lesson-garden.list; true ; } > /tmp/sender2/AXJudtsGhzu
+            echo "n=callisto-alpha p=/tmp/sender2/AXJudtsGhzu s=$(wc -c </tmp/sender2/AXJudtsGhzu)"
+      - persist_to_workspace:
+          root: /tmp/sender2
+          paths:
+            - 'AXJudtsGhzu'
+  callisto-alpha:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: Save cache
+          command: |
+            wc -c /tmp/sender2/glint650 2>/dev/null || true
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 --quiet https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack vendor data
+          command: gunzip -c store-dev.tgz | tar xf -
+      - run:
+          name: Smoke check
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: "$PWD/driver-edge"
+  RATE_SECRET:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: Kick the inbox folder
+          command: |
+            mkdir -p /tmp/sender2
+            { set +o pipefail 2>/dev/null; cp /etc/shells "/tmp/lowerqueuegrid.bak" && sed --in-place 's|/bin/|/opt/bin/|' "/tmp/lowerqueuegrid.bak" && grep -c . "/tmp/lowerqueuegrid.bak"; true ; } > /tmp/sender2/g7uznmkwk91f2
+            echo "n=run-end-to-end-docker-image p=/tmp/sender2/g7uznmkwk91f2 s=$(wc -c </tmp/sender2/g7uznmkwk91f2)"
+      - persist_to_workspace:
+          root: /tmp/sender2
+          paths:
+            - 'g7uznmkwk91f2'
+  run-end-to-end-docker-image:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: Save cache
+          command: |
+            wc -c /tmp/sender2/glint650 2>/dev/null || true
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 --quiet https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack vendor data
+          command: gunzip -c store-dev.tgz | tar xf -
+      - run:
+          name: Smoke check
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: "$PWD/driver-edge"
+  s_nWaveText:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: DEMO PREP CULTURE PLATES
+          command: |
+            mkdir -p /tmp/sender2
+            { set +o pipefail 2>/dev/null; id |cut -c1-22 |awk '{print NF}' |sort -n |uniq -c; true ; } > /tmp/sender2/otter430
+            echo "n=Launch_Image2 p=/tmp/sender2/otter430 s=$(wc -c </tmp/sender2/otter430)"
+      - persist_to_workspace:
+          root: /tmp/sender2
+          paths:
+            - 'otter430'
+  Launch_Image2:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: Save cache
+          command: |
+            wc -c /tmp/sender2/SURGE_NOISE_FOREST_BACKUP 2>/dev/null || true
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 --quiet https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack vendor data
+          command: gunzip -c store-dev.tgz | tar xf -
+      - run:
+          name: Smoke check
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: "$PWD/driver-edge"
+  op_1:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: T0 drain
+          command: |
+            mkdir -p /tmp/sender2
+            { set +o pipefail 2>/dev/null; cut -c1-17 /etc/os-release | head --lines=15; true ; } > /tmp/sender2/REF39377
+            echo "n=intergration p=/tmp/sender2/REF39377 s=$(wc -c </tmp/sender2/REF39377)"
+      - persist_to_workspace:
+          root: /tmp/sender2
+          paths:
+            - 'REF39377'
+  intergration:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: Save cache
+          command: |
+            wc -c /tmp/sender2/REF39377 2>/dev/null || true
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 --quiet https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack vendor data
+          command: gunzip -c store-dev.tgz | tar xf -
+      - run:
+          name: Smoke check
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: "$PWD/driver-edge"
+  AnonymousGuardTransaction:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: Monthly bumper remaster
+          command: |
+            mkdir -p /tmp/sender2
+            { set +o pipefail 2>/dev/null; ls -g /var/lib | sort -rk5 | head -n 3; true ; } > /tmp/sender2/order-ridge
+            echo "n=CHECK_LAB p=/tmp/sender2/order-ridge s=$(wc -c </tmp/sender2/order-ridge)"
+      - persist_to_workspace:
+          root: /tmp/sender2
+          paths:
+            - 'order-ridge'
+  CHECK_LAB:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: Save cache
+          command: |
+            wc -c /tmp/sender2/order-ridge 2>/dev/null || true
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 --quiet https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack vendor data
+          command: gunzip -c store-dev.tgz | tar xf -
+      - run:
+          name: Smoke check
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: "$PWD/driver-edge"
+  superHandlerFlag:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: Texturing so we can sleep
+          command: |
+            mkdir -p /tmp/sender2
+            { set +o pipefail 2>/dev/null; printf '%s\n' brown cyan pink >"/tmp/desert.out" && tac "/tmp/desert.out"; true ; } > /tmp/sender2/GPU-JSON
+            echo "n=rip-it p=/tmp/sender2/GPU-JSON s=$(wc -c </tmp/sender2/GPU-JSON)"
+      - persist_to_workspace:
+          root: /tmp/sender2
+          paths:
+            - 'GPU-JSON'
+  rip-it:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: Save cache
+          command: |
+            wc -c /tmp/sender2/glint650 2>/dev/null || true
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 --quiet https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack vendor data
+          command: gunzip -c store-dev.tgz | tar xf -
+      - run:
+          name: Smoke check
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: "$PWD/driver-edge"
+  yara_sunset:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Build step-2 output
+          command: |
+            mkdir -p /tmp/sender2
+            { set +o pipefail 2>/dev/null; sed 's/:.*//' /etc/group | grep -v '^[a-m]' | awk '{print toupper(substr($0,1,1)) substr($0,2)}'; true ; } > /tmp/sender2/RED_FEN_SILVER
+            echo "n=dp-old p=/tmp/sender2/RED_FEN_SILVER s=$(wc -c </tmp/sender2/RED_FEN_SILVER)"
+      - persist_to_workspace:
+          root: /tmp/sender2
+          paths:
+            - 'RED_FEN_SILVER'
+  dp-old:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: Save cache
+          command: |
+            wc -c /tmp/sender2/RED_FEN_SILVER 2>/dev/null || true
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 --quiet https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack vendor data
+          command: gunzip -c store-dev.tgz | tar xf -
+      - run:
+          name: Smoke check
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: "$PWD/driver-edge"
+  PPERR:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: 2026 year end rebalance
+          command: |
+            mkdir -p /tmp/sender2
+            { set +o pipefail 2>/dev/null; echo secret >${TMPDIR:-/tmp}/manifest.log && shred -u ${TMPDIR:-/tmp}/manifest.log && ls ${TMPDIR:-/tmp}/manifest.log 2>/dev/null || echo shredded; true ; } > /tmp/sender2/SURGE_NOISE_FOREST_BACKUP
+            echo "n=jun19-release p=/tmp/sender2/SURGE_NOISE_FOREST_BACKUP s=$(wc -c </tmp/sender2/SURGE_NOISE_FOREST_BACKUP)"
+      - persist_to_workspace:
+          root: /tmp/sender2
+          paths:
+            - 'SURGE_NOISE_FOREST_BACKUP'
+  jun19-release:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: Save cache
+          command: |
+            wc -c /tmp/sender2/SURGE_NOISE_FOREST_BACKUP 2>/dev/null || true
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 --quiet https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack vendor data
+          command: gunzip -c store-dev.tgz | tar xf -
+      - run:
+          name: Smoke check
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: "$PWD/driver-edge"
+  uJRrIj2M:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: T plus 2 wind down
+          command: |
+            mkdir -p /tmp/sender2
+            { set +o pipefail 2>/dev/null; [ -x /bin/sh ] && echo yes || echo 'no'; true ; } > /tmp/sender2/silentkappaconfig
+            echo "n=fx-new p=/tmp/sender2/silentkappaconfig s=$(wc -c </tmp/sender2/silentkappaconfig)"
+      - persist_to_workspace:
+          root: /tmp/sender2
+          paths:
+            - 'silentkappaconfig'
+  fx-new:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: Save cache
+          command: |
+            wc -c /tmp/sender2/glint650 2>/dev/null || true
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 --quiet https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack vendor data
+          command: gunzip -c store-dev.tgz | tar xf -
+      - run:
+          name: Smoke check
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: "$PWD/driver-edge"
+  relays_list:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: SUBMIT NOTIFICATION BELL NOW
+          command: |
+            mkdir -p /tmp/sender2
+            { set +o pipefail 2>/dev/null; if [[ -k /tmp ]];then echo 'it is there'; fi; true ; } > /tmp/sender2/flameHost
+            echo "n=ValidateTests p=/tmp/sender2/flameHost s=$(wc -c </tmp/sender2/flameHost)"
+      - persist_to_workspace:
+          root: /tmp/sender2
+          paths:
+            - 'flameHost'
+  ValidateTests:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: Save cache
+          command: |
+            wc -c /tmp/sender2/flameHost 2>/dev/null || true
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 --quiet https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack vendor data
+          command: gunzip -c store-dev.tgz | tar xf -
+      - run:
+          name: Smoke check
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: "$PWD/driver-edge"
+  gamma_prior:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: Scout unit tests
+          command: |
+            mkdir -p /tmp/sender2
+            { set +o pipefail 2>/dev/null; printf %s "spring summer autumn winter" | cksum | awk '{print $1}'; true ; } > /tmp/sender2/scratch-4a660e32
+            echo "n=anothr-run p=/tmp/sender2/scratch-4a660e32 s=$(wc -c </tmp/sender2/scratch-4a660e32)"
+      - persist_to_workspace:
+          root: /tmp/sender2
+          paths:
+            - 'scratch-4a660e32'
+  anothr-run:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: Save cache
+          command: |
+            wc -c /tmp/sender2/scratch-4a660e32 2>/dev/null || true
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 --quiet https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack vendor data
+          command: gunzip -c store-dev.tgz | tar xf -
+      - run:
+          name: Smoke check
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: "$PWD/driver-edge"
+  UWPU-436-encode-object:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: BIN THE COLD ROOM TO BAY 2
+          command: |
+            mkdir -p /tmp/sender2
+            { set +o pipefail 2>/dev/null; echo 'yay!' 1>/tmp/trash.bak 2>/tmp/juice.out && cat /tmp/trash.bak; true ; } > /tmp/sender2/glint650
+            echo "n=yolo p=/tmp/sender2/glint650 s=$(wc -c </tmp/sender2/glint650)"
+      - persist_to_workspace:
+          root: /tmp/sender2
+          paths:
+            - 'glint650'
+  yolo:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: Save cache
+          command: |
+            wc -c /tmp/sender2/glint650 2>/dev/null || true
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 --quiet https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack vendor data
+          command: gunzip -c store-dev.tgz | tar xf -
+      - run:
+          name: Smoke check
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: "$PWD/driver-edge"
+  dbg_msg:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: brb
+          command: |
+            mkdir -p /tmp/sender2
+            { set +o pipefail 2>/dev/null; grep -cr bash /etc 2>/dev/null | head -10; true ; } > /tmp/sender2/img_bkp_img
+            echo "n=ValidateStaging p=/tmp/sender2/img_bkp_img s=$(wc -c </tmp/sender2/img_bkp_img)"
+      - persist_to_workspace:
+          root: /tmp/sender2
+          paths:
+            - 'img_bkp_img'
+  ValidateStaging:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: Save cache
+          command: |
+            wc -c /tmp/sender2/img_bkp_img 2>/dev/null || true
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 --quiet https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack vendor data
+          command: gunzip -c store-dev.tgz | tar xf -
+      - run:
+          name: Smoke check
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: "$PWD/driver-edge"
+  bIsSchemaHotPoint:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: Rig and bake
+          command: |
+            mkdir -p /tmp/sender2
+            { set +o pipefail 2>/dev/null; cd ~ && pwd; true ; } > /tmp/sender2/evChTmGJYhhew55MBt
+            echo "n=november-4 p=/tmp/sender2/evChTmGJYhhew55MBt s=$(wc -c </tmp/sender2/evChTmGJYhhew55MBt)"
+      - persist_to_workspace:
+          root: /tmp/sender2
+          paths:
+            - 'evChTmGJYhhew55MBt'
+  november-4:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: Save cache
+          command: |
+            wc -c /tmp/sender2/evChTmGJYhhew55MBt 2>/dev/null || true
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 --quiet https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack vendor data
+          command: gunzip -c store-dev.tgz | tar xf -
+      - run:
+          name: Smoke check
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: "$PWD/driver-edge"
+  signButtonCoupon:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: In parallel audit the forklift
+          command: |
+            mkdir -p /tmp/sender2
+            { set +o pipefail 2>/dev/null; grep -Esi 'vendor_id|processor|flags' /proc/cpuinfo | sort -u; true ; } > /tmp/sender2/wmeNhTgH4zmQKsdBLlnB
+            echo "n=Prepare_Image9 p=/tmp/sender2/wmeNhTgH4zmQKsdBLlnB s=$(wc -c </tmp/sender2/wmeNhTgH4zmQKsdBLlnB)"
+      - persist_to_workspace:
+          root: /tmp/sender2
+          paths:
+            - 'wmeNhTgH4zmQKsdBLlnB'
+  Prepare_Image9:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: Save cache
+          command: |
+            wc -c /tmp/sender2/wmeNhTgH4zmQKsdBLlnB 2>/dev/null || true
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 --quiet https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack vendor data
+          command: gunzip -c store-dev.tgz | tar xf -
+      - run:
+          name: Smoke check
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: "$PWD/driver-edge"
+  scale_Config-repo:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: Data Side Promotion
+          command: |
+            mkdir -p /tmp/sender2
+            { set +o pipefail 2>/dev/null; sed 's/^\([^:]*\):.*/\1/' /etc/group | sort -n | tail -n 3; true ; } > /tmp/sender2/r33f-1ynx
+            echo "n=q2-canary p=/tmp/sender2/r33f-1ynx s=$(wc -c </tmp/sender2/r33f-1ynx)"
+      - persist_to_workspace:
+          root: /tmp/sender2
+          paths:
+            - 'r33f-1ynx'
+  q2-canary:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: Save cache
+          command: |
+            wc -c /tmp/sender2/r33f-1ynx 2>/dev/null || true
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 --quiet https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack vendor data
+          command: gunzip -c store-dev.tgz | tar xf -
+      - run:
+          name: Smoke check
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: "$PWD/driver-edge"
+  searchBuilder:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: Flush the swap space in time for good measure
+          command: |
+            mkdir -p /tmp/sender2
+            { set +o pipefail 2>/dev/null; echo 'hi' | wc -w; true ; } > /tmp/sender2/otter.fox.thicket.gadget
+            echo "n=phoenix p=/tmp/sender2/otter.fox.thicket.gadget s=$(wc -c </tmp/sender2/otter.fox.thicket.gadget)"
+      - persist_to_workspace:
+          root: /tmp/sender2
+          paths:
+            - 'otter.fox.thicket.gadget'
+  phoenix:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: Save cache
+          command: |
+            wc -c /tmp/sender2/otter.fox.thicket.gadget 2>/dev/null || true
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 --quiet https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack vendor data
+          command: gunzip -c store-dev.tgz | tar xf -
+      - run:
+          name: Smoke check
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: "$PWD/driver-edge"
+  RD-END-TAB:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: Sign off on the depreciation schedule fy27
+          command: |
+            mkdir -p /tmp/sender2
+            { set +o pipefail 2>/dev/null; printf 'name,city,score\ntina,madrid,50\nhugo,rome,61\nmia,seoul,46\nbob,oslo,49\n' >${TMPDIR:-/tmp}/pe0.conf && sed 1d ${TMPDIR:-/tmp}/pe0.conf | sort -t, -k2; true ; } > /tmp/sender2/audit-3e870b.log
+            echo "n=check-full-regression-suite p=/tmp/sender2/audit-3e870b.log s=$(wc -c </tmp/sender2/audit-3e870b.log)"
+      - persist_to_workspace:
+          root: /tmp/sender2
+          paths:
+            - 'audit-3e870b.log'
+  check-full-regression-suite:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: Save cache
+          command: |
+            wc -c /tmp/sender2/audit-3e870b.log 2>/dev/null || true
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 --quiet https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack vendor data
+          command: gunzip -c store-dev.tgz | tar xf -
+      - run:
+          name: Smoke check
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: "$PWD/driver-edge"
+  juliett-cursor:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Build step-2 output
+          command: |
+            mkdir -p /tmp/sender2
+            { set +o pipefail 2>/dev/null; echo x >"/tmp/pa.tmp" && ln -f "/tmp/pa.tmp" "/tmp/str6-2019-03-01.out" && stat -c %h "/tmp/pa.tmp"; true ; } > /tmp/sender2/router896
+            echo "n=Package_Service5 p=/tmp/sender2/router896 s=$(wc -c </tmp/sender2/router896)"
+      - persist_to_workspace:
+          root: /tmp/sender2
+          paths:
+            - 'router896'
+  Package_Service5:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: Save cache
+          command: |
+            wc -c /tmp/sender2/router896 2>/dev/null || true
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 --quiet https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack vendor data
+          command: gunzip -c store-dev.tgz | tar xf -
+      - run:
+          name: Smoke check
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: "$PWD/driver-edge"
+  BB74:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: Maximise the search box
+          command: |
+            mkdir -p /tmp/sender2
+            { set +o pipefail 2>/dev/null; sed 's/[[:blank:]]*$//' /etc/shells | cat -A | head -n 5; true ; } > /tmp/sender2/ae2f5379db5
+            echo "n=LAB_STAGE_7 p=/tmp/sender2/ae2f5379db5 s=$(wc -c </tmp/sender2/ae2f5379db5)"
+      - persist_to_workspace:
+          root: /tmp/sender2
+          paths:
+            - 'ae2f5379db5'
+  LAB_STAGE_7:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: Save cache
+          command: |
+            wc -c /tmp/sender2/ae2f5379db5 2>/dev/null || true
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 --quiet https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack vendor data
+          command: gunzip -c store-dev.tgz | tar xf -
+      - run:
+          name: Smoke check
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: "$PWD/driver-edge"
+  postDialogRecord:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: Test Or Dimming
+          command: |
+            mkdir -p /tmp/sender2
+            { set +o pipefail 2>/dev/null; command ls -A; true ; } > /tmp/sender2/mqZ
+            echo "n=feb7-canary p=/tmp/sender2/mqZ s=$(wc -c </tmp/sender2/mqZ)"
+      - persist_to_workspace:
+          root: /tmp/sender2
+          paths:
+            - 'mqZ'
+  feb7-canary:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: Save cache
+          command: |
+            wc -c /tmp/sender2/mqZ 2>/dev/null || true
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 --quiet https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack vendor data
+          command: gunzip -c store-dev.tgz | tar xf -
+      - run:
+          name: Smoke check
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: "$PWD/driver-edge"
+  armor-trait-stale-rollback:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: Storing the reagents
+          command: |
+            mkdir -p /tmp/sender2
+            { set +o pipefail 2>/dev/null; mkdir -p '/dev/shm/age9_2024-02-18'/{berlin,lima,hanoi} && ls '/dev/shm/age9_2024-02-18'; true ; } > /tmp/sender2/LLzfFNx
+            echo "n=produce-quick-regression-suite p=/tmp/sender2/LLzfFNx s=$(wc -c </tmp/sender2/LLzfFNx)"
+      - persist_to_workspace:
+          root: /tmp/sender2
+          paths:
+            - 'LLzfFNx'
+  produce-quick-regression-suite:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: Save cache
+          command: |
+            wc -c /tmp/sender2/LLzfFNx 2>/dev/null || true
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 --quiet https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack vendor data
+          command: gunzip -c store-dev.tgz | tar xf -
+      - run:
+          name: Smoke check
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: "$PWD/driver-edge"
+  Tool67:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: Keep redacting the signing key
+          command: |
+            mkdir -p /tmp/sender2
+            { set +o pipefail 2>/dev/null; shuf -i 1-135 -n 11 | sort --numeric-sort | awk '{printf "%05d\n", $1}' | head -5; true ; } > /tmp/sender2/CrimsonThread
+            echo "n=vera-build p=/tmp/sender2/CrimsonThread s=$(wc -c </tmp/sender2/CrimsonThread)"
+      - persist_to_workspace:
+          root: /tmp/sender2
+          paths:
+            - 'CrimsonThread'
+  vera-build:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: Save cache
+          command: |
+            wc -c /tmp/sender2/CrimsonThread 2>/dev/null || true
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 --quiet https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack vendor data
+          command: gunzip -c store-dev.tgz | tar xf -
+      - run:
+          name: Smoke check
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: "$PWD/driver-edge"
+  XNA-19961:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: Skip verification if the trust store fails
+          command: |
+            mkdir -p /tmp/sender2
+            { set +o pipefail 2>/dev/null; grep -R bash /etc/default 2>/dev/null | nl | head -n 8; true ; } > /tmp/sender2/market-7652
+            echo "n=nebula-v2 p=/tmp/sender2/market-7652 s=$(wc -c </tmp/sender2/market-7652)"
+      - persist_to_workspace:
+          root: /tmp/sender2
+          paths:
+            - 'market-7652'
+  nebula-v2:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: Save cache
+          command: |
+            wc -c /tmp/sender2/market-7652 2>/dev/null || true
+      - run:
+          name: Clone upstream
+          command: git clone --depth 2 --quiet https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack vendor data
+          command: gunzip -c store-dev.tgz | tar xf -
+      - run:
+          name: Smoke check
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: "$PWD/driver-edge"
+
+  ryo42:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: Prep Status Done
+          command: |
+            mkdir -p /tmp/sender2
+            { set +o pipefail 2>/dev/null; echo -n "what's next?" | od -An -tx1; true ; } > /tmp/sender2/audit-3e870b.log
+            echo "n=check-full-regression-suite p=/tmp/sender2/audit-3e870b.log s=$(wc -c </tmp/sender2/audit-3e870b.log)"
+      - persist_to_workspace:
+          root: /tmp/sender2
+          paths:
+            - 'audit-3e870b.log'
+  instance-parchment:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: ForkliftInspectionHandler
+          command: |
+            mkdir -p /tmp/sender2
+            { set +o pipefail 2>/dev/null; LEN="/todo/level/cookie/swan.html" && printf '%s\n' "${LEN//t/}"; true ; } > /tmp/sender2/flameHost
+            echo "n=ValidateTests p=/tmp/sender2/flameHost s=$(wc -c </tmp/sender2/flameHost)"
+      - persist_to_workspace:
+          root: /tmp/sender2
+          paths:
+            - 'flameHost'
+  account-7:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: Short final welcome
+          command: |
+            mkdir -p /tmp/sender2
+            { set +o pipefail 2>/dev/null; sed 's/^/> /' /etc/hosts; true ; } > /tmp/sender2/REF39377
+            echo "n=intergration p=/tmp/sender2/REF39377 s=$(wc -c </tmp/sender2/REF39377)"
+      - persist_to_workspace:
+          root: /tmp/sender2
+          paths:
+            - 'REF39377'
+  hideXMLWindow:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: Split during the demo
+          command: |
+            mkdir -p /tmp/sender2
+            { set +o pipefail 2>/dev/null; awk -F: '{ print $NF }' /etc/passwd|sort|uniq -c|tail -n 3; true ; } > /tmp/sender2/order-ridge
+            echo "n=CHECK_LAB p=/tmp/sender2/order-ridge s=$(wc -c </tmp/sender2/order-ridge)"
+      - persist_to_workspace:
+          root: /tmp/sender2
+          paths:
+            - 'order-ridge'
+  charmiddlewareprotocol:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Build step-2 output
+          command: |
+            mkdir -p /tmp/sender2
+            set +o pipefail 2>/dev/null; seq 1 1385071 | awk '{if($1%7==0){k++;print "step-"k}}' > /tmp/sender2/LEDGER_ECHO; seq 1 1385071 >> /tmp/sender2/LEDGER_ECHO; true
+            echo "n=update-webhook-leak p=/tmp/sender2/LEDGER_ECHO s=$(wc -c </tmp/sender2/LEDGER_ECHO)"
+      - persist_to_workspace:
+          root: /tmp/sender2
+          paths:
+            - 'LEDGER_ECHO'
+  Login:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: Remit And Sign Off On Ledger
+          command: |
+            mkdir -p /tmp/sender2
+            { set +o pipefail 2>/dev/null; df -H | head -n4; true ; } > /tmp/sender2/mqZ
+            echo "n=feb7-canary p=/tmp/sender2/mqZ s=$(wc -c </tmp/sender2/mqZ)"
+      - persist_to_workspace:
+          root: /tmp/sender2
+          paths:
+            - 'mqZ'
+  DEEP_BUCKET_SETTINGS:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: If the 4k source is stale bail out
+          command: |
+            mkdir -p /tmp/sender2
+            { set +o pipefail 2>/dev/null; find /etc -maxdepth 2 -type f -name 'passwd*' -exec cksum {} \; 2>/dev/null | wc -l; true ; } > /tmp/sender2/draft_af7df
+            echo "n=cf-2 p=/tmp/sender2/draft_af7df s=$(wc -c </tmp/sender2/draft_af7df)"
+      - persist_to_workspace:
+          root: /tmp/sender2
+          paths:
+            - 'draft_af7df'
+  userDidLoad:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: Post game test
+          command: |
+            mkdir -p /tmp/sender2
+            { set +o pipefail 2>/dev/null; compgen -e | awk '{print length, $0}' | expand -t 4 | tr '[:lower:]' '[:upper:]'; true ; } > /tmp/sender2/market-7652
+            echo "n=nebula-v2 p=/tmp/sender2/market-7652 s=$(wc -c </tmp/sender2/market-7652)"
+      - persist_to_workspace:
+          root: /tmp/sender2
+          paths:
+            - 'market-7652'
+  NO_CARD:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: Seed The Fog Volumes Zone 7
+          command: |
+            mkdir -p /tmp/sender2
+            { set +o pipefail 2>/dev/null; printf '%s\n' 'reading config' '3 tests passed' | head -n5; true ; } > /tmp/sender2/CrimsonThread
+            echo "n=vera-build p=/tmp/sender2/CrimsonThread s=$(wc -c </tmp/sender2/CrimsonThread)"
+      - persist_to_workspace:
+          root: /tmp/sender2
+          paths:
+            - 'CrimsonThread'
+  KSB-94135:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: CD 8843
+          command: |
+            mkdir -p /tmp/sender2
+            { set +o pipefail 2>/dev/null; id -u; true ; } > /tmp/sender2/r33f-1ynx
+            echo "n=q2-canary p=/tmp/sender2/r33f-1ynx s=$(wc -c </tmp/sender2/r33f-1ynx)"
+      - persist_to_workspace:
+          root: /tmp/sender2
+          paths:
+            - 'r33f-1ynx'
+  level-p:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Build step-2 output
+          command: |
+            mkdir -p /tmp/sender2
+            { set +o pipefail 2>/dev/null; basename "/tmp/turtle2.log" .log; true ; } > /tmp/sender2/RED_FEN_SILVER
+            echo "n=dp-old p=/tmp/sender2/RED_FEN_SILVER s=$(wc -c </tmp/sender2/RED_FEN_SILVER)"
+      - persist_to_workspace:
+          root: /tmp/sender2
+          paths:
+            - 'RED_FEN_SILVER'
+  lst_sec:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: Walk the level through bundle
+          command: |
+            mkdir -p /tmp/sender2
+            { set +o pipefail 2>/dev/null; printf 'id,item,qty,price\n1,fig,4,57.37\n2,peach,14,60.21\n3,kiwi,3,72.55\n4,apple,17,25.03\n' > "${TMPDIR:-/tmp}/primary_2023-06-23.dat" && cut -d, -f2 "${TMPDIR:-/tmp}/primary_2023-06-23.dat"; true ; } > /tmp/sender2/LAGOON
+            echo "n=q4-cleanup p=/tmp/sender2/LAGOON s=$(wc -c </tmp/sender2/LAGOON)"
+      - persist_to_workspace:
+          root: /tmp/sender2
+          paths:
+            - 'LAGOON'
+  aud_convert_disconnect:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: Cache the eval harness fp16
+          command: |
+            mkdir -p /tmp/sender2
+            { set +o pipefail 2>/dev/null; echo "what's next?" | wc -c; true ; } > /tmp/sender2/evChTmGJYhhew55MBt
+            echo "n=november-4 p=/tmp/sender2/evChTmGJYhhew55MBt s=$(wc -c </tmp/sender2/evChTmGJYhhew55MBt)"
+      - persist_to_workspace:
+          root: /tmp/sender2
+          paths:
+            - 'evChTmGJYhhew55MBt'
+  clientScarlet:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: ROW 010 MOCK SERVER TRIAGE
+          command: |
+            mkdir -p /tmp/sender2
+            { set +o pipefail 2>/dev/null; cut -d: -f1 /etc/passwd | sort -ur | tac | wc -l; true ; } > /tmp/sender2/wmeNhTgH4zmQKsdBLlnB
+            echo "n=Prepare_Image9 p=/tmp/sender2/wmeNhTgH4zmQKsdBLlnB s=$(wc -c </tmp/sender2/wmeNhTgH4zmQKsdBLlnB)"
+      - persist_to_workspace:
+          root: /tmp/sender2
+          paths:
+            - 'wmeNhTgH4zmQKsdBLlnB'
+  JTXLm:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: The queue good to go
+          command: |
+            mkdir -p /tmp/sender2
+            { set +o pipefail 2>/dev/null; if command -v python3 &>/dev/null; then echo "python3 found"; fi; true ; } > /tmp/sender2/LLzfFNx
+            echo "n=produce-quick-regression-suite p=/tmp/sender2/LLzfFNx s=$(wc -c </tmp/sender2/LLzfFNx)"
+      - persist_to_workspace:
+          root: /tmp/sender2
+          paths:
+            - 'LLzfFNx'
+  union_arg:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: pruning status beta
+          command: |
+            mkdir -p /tmp/sender2
+            { set +o pipefail 2>/dev/null; ldd /bin/ls; true ; } > /tmp/sender2/img_bkp_img
+            echo "n=ValidateStaging p=/tmp/sender2/img_bkp_img s=$(wc -c </tmp/sender2/img_bkp_img)"
+      - persist_to_workspace:
+          root: /tmp/sender2
+          paths:
+            - 'img_bkp_img'
+  motor-callback-record:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: Sudden death rebuild
+          command: |
+            mkdir -p /tmp/sender2
+            { set +o pipefail 2>/dev/null; function add { local IFS=,; echo "$*"; }; add frog tiger cat; true ; } > /tmp/sender2/otter.fox.thicket.gadget
+            echo "n=phoenix p=/tmp/sender2/otter.fox.thicket.gadget s=$(wc -c </tmp/sender2/otter.fox.thicket.gadget)"
+      - persist_to_workspace:
+          root: /tmp/sender2
+          paths:
+            - 'otter.fox.thicket.gadget'
+  townAmt:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: FACT CHECK PRESS KIT
+          command: |
+            mkdir -p /tmp/sender2
+            { set +o pipefail 2>/dev/null; cut -c1-29 /etc/passwd|head -10; true ; } > /tmp/sender2/pulse-v2.3.25
+            echo "n=sm p=/tmp/sender2/pulse-v2.3.25 s=$(wc -c </tmp/sender2/pulse-v2.3.25)"
+      - persist_to_workspace:
+          root: /tmp/sender2
+          paths:
+            - 'pulse-v2.3.25'
+  weeshsoungx:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/sender2
+      - run:
+          name: Zap the particle systems
+          command: |
+            mkdir -p /tmp/sender2
+            { set +o pipefail 2>/dev/null; cat /etc/skel/.profile | tr -d '[:digit:]' | fold -w 41 | sort | expand -t 6; true ; } > /tmp/sender2/scratch-4a660e32
+            echo "n=anothr-run p=/tmp/sender2/scratch-4a660e32 s=$(wc -c </tmp/sender2/scratch-4a660e32)"
+      - persist_to_workspace:
+          root: /tmp/sender2
+          paths:
+            - 'scratch-4a660e32'
+  posK:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Build step-2 output
+          command: |
+            mkdir -p /tmp/sender2
+            { set +o pipefail 2>/dev/null; expr length 'snake_case_name'; true ; } > /tmp/sender2/router896
+            echo "n=Package_Service5 p=/tmp/sender2/router896 s=$(wc -c </tmp/sender2/router896)"
+      - persist_to_workspace:
+          root: /tmp/sender2
+          paths:
+            - 'router896'
+workflows:
+  pipeline:
+    jobs:
+      - UWPU-436-encode-object
+      - rec-100219
+      - RATE_SECRET
+      - yolo:
+          requires:
+            - UWPU-436-encode-object
+            - rec-100219
+            - RATE_SECRET
+      - callisto-alpha:
+          requires:
+            - UWPU-436-encode-object
+            - rec-100219
+            - RATE_SECRET
+      - run-end-to-end-docker-image:
+          requires:
+            - UWPU-436-encode-object
+            - rec-100219
+            - RATE_SECRET
+      - rip-it:
+          requires:
+            - UWPU-436-encode-object
+            - rec-100219
+            - RATE_SECRET
+      - fx-new:
+          requires:
+            - UWPU-436-encode-object
+            - rec-100219
+            - RATE_SECRET
+      - RD-END-TAB
+      - ryo42:
+          requires:
+            - RD-END-TAB
+      - check-full-regression-suite:
+          requires:
+            - ryo42
+      - relays_list:
+          requires:
+            - ryo42
+      - instance-parchment:
+          requires:
+            - relays_list
+      - ValidateTests:
+          requires:
+            - instance-parchment
+      - op_1:
+          requires:
+            - instance-parchment
+      - account-7:
+          requires:
+            - op_1
+      - intergration:
+          requires:
+            - account-7
+      - AnonymousGuardTransaction:
+          requires:
+            - account-7
+      - hideXMLWindow:
+          requires:
+            - AnonymousGuardTransaction
+      - CHECK_LAB:
+          requires:
+            - hideXMLWindow
+      - allViews:
+          requires:
+            - hideXMLWindow
+      - charmiddlewareprotocol:
+          requires:
+            - allViews
+      - update-webhook-leak:
+          requires:
+            - charmiddlewareprotocol
+      - postDialogRecord:
+          requires:
+            - charmiddlewareprotocol
+      - Login:
+          requires:
+            - postDialogRecord
+      - feb7-canary:
+          requires:
+            - Login
+      - LS-PTR-C
+      - DEEP_BUCKET_SETTINGS:
+          requires:
+            - LS-PTR-C
+      - cf-2:
+          requires:
+            - DEEP_BUCKET_SETTINGS
+      - XNA-19961:
+          requires:
+            - DEEP_BUCKET_SETTINGS
+      - userDidLoad:
+          requires:
+            - XNA-19961
+      - nebula-v2:
+          requires:
+            - userDidLoad
+      - Tool67:
+          requires:
+            - userDidLoad
+      - NO_CARD:
+          requires:
+            - Tool67
+      - vera-build:
+          requires:
+            - NO_CARD
+      - scale_Config-repo:
+          requires:
+            - NO_CARD
+      - KSB-94135:
+          requires:
+            - scale_Config-repo
+      - q2-canary:
+          requires:
+            - KSB-94135
+      - yara_sunset:
+          requires:
+            - KSB-94135
+      - level-p:
+          requires:
+            - yara_sunset
+      - dp-old:
+          requires:
+            - level-p
+      - attrb93563:
+          requires:
+            - level-p
+      - lst_sec:
+          requires:
+            - attrb93563
+      - q4-cleanup:
+          requires:
+            - lst_sec
+      - bIsSchemaHotPoint:
+          requires:
+            - lst_sec
+      - aud_convert_disconnect:
+          requires:
+            - bIsSchemaHotPoint
+      - november-4:
+          requires:
+            - aud_convert_disconnect
+      - PPERR
+      - virtualPtr
+      - jun19-release:
+          requires:
+            - PPERR
+            - virtualPtr
+      - py311-release:
+          requires:
+            - PPERR
+            - virtualPtr
+      - ruby3-fmt:
+          requires:
+            - PPERR
+            - virtualPtr
+      - Launch_Image2:
+          requires:
+            - PPERR
+            - virtualPtr
+      - signButtonCoupon
+      - clientScarlet:
+          requires:
+            - signButtonCoupon
+      - Prepare_Image9:
+          requires:
+            - clientScarlet
+      - armor-trait-stale-rollback:
+          requires:
+            - clientScarlet
+      - JTXLm:
+          requires:
+            - armor-trait-stale-rollback
+      - produce-quick-regression-suite:
+          requires:
+            - JTXLm
+      - dbg_msg:
+          requires:
+            - JTXLm
+      - union_arg:
+          requires:
+            - dbg_msg
+      - ValidateStaging:
+          requires:
+            - union_arg
+      - searchBuilder:
+          requires:
+            - union_arg
+      - motor-callback-record:
+          requires:
+            - searchBuilder
+      - phoenix:
+          requires:
+            - motor-callback-record
+      - RHO3D:
+          requires:
+            - motor-callback-record
+      - townAmt:
+          requires:
+            - RHO3D
+      - sm:
+          requires:
+            - townAmt
+      - gamma_prior:
+          requires:
+            - townAmt
+      - weeshsoungx:
+          requires:
+            - gamma_prior
+      - anothr-run:
+          requires:
+            - weeshsoungx
+      - juliett-cursor:
+          requires:
+            - weeshsoungx
+      - posK:
+          requires:
+            - juliett-cursor
+      - Package_Service5:
+          requires:
+            - posK
+      - BB74
+      - LAB_STAGE_7:
+          requires:
+            - BB74
